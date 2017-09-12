@@ -12,7 +12,7 @@ def generate_ontology(input_string):
 	generate the ontology
 	return a dictionary with key as a parent node and values is the list of child nodes
 	'''
-	hierarchy = {}
+	ontology = {}
 	stack = []
 	tree_list = input_string.split(" ")
 	for i in range(len(tree_list)):
@@ -22,8 +22,8 @@ def generate_ontology(input_string):
 			stack.pop()
 		else:
 			if stack:
-				hierarchy[tree_list[i]] = stack[len(stack) - 1]
-	return (flip_dictionary(hierarchy))
+				ontology[tree_list[i]] = stack[len(stack) - 1]
+	return (flip_dictionary(ontology))
 
 def load_questions(question, question_database):
 	'''
