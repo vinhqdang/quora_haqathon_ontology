@@ -1,12 +1,3 @@
-#!/usr/bin/python
-
-def flip_dictionary (old_dict):
-	'''
-	flip a dictionary: keys to values and values to keys
-	same keys will become a list
-	'''
-	return dict([(value, [key for key,v in old_dict.items() if v==value]) for value in set(old_dict.values())])
-
 def generate_ontology(input_string):
 	'''
 	generate the ontology
@@ -22,8 +13,13 @@ def generate_ontology(input_string):
 			stack.pop()
 		else:
 			if stack:
-				ontology[tree_list[i]] = stack[len(stack) - 1]
-	return (flip_dictionary(ontology))
+				key = stack[len(stack) - 1]
+				value = tree_list[i]
+				if key in ontology.keys():
+					ontology[key].append (value)
+				else:
+					ontology[key] = [value]
+	return (ontology)
 
 def load_questions(question, question_database):
 	'''
@@ -58,9 +54,11 @@ def answer_query(query, ontology, question_database):
 			N = len(question_database[cur_topic])
 			for i in xrange (N):
 				question = question_database[cur_topic][i]
-				_index = question.find (query_content)
-				if _index == 0:		# find the query content in the beginning of the question
-					count += 1
+				query_len = len (query_content)
+				quest_len = len (question)
+				if query_len <= quest_len:
+					if query_content == question[0:query_len]:
+						count += 1
 			
 		# remove the first topic
 		topics.pop(0)
